@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Servicios de Streaming — Reproducción</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:Roboto, system-ui, -apple-system, "Segoe UI",  "Helvetica Neue", Arial; background:#060910;color:#e6eef6}
+    a{color:inherit;text-decoration:none}
+
+    /* Variables */
+    :root{
+      --bg-dark:#0b0f14;
+      --panel:#0f1720;
+      --accent:#e23a3a; /* red */
+      --accent-2:#14b866; /* green */
+      --muted:#98a0ad;
+      --card:#0f1722;
+      --glass: rgba(255,255,255,0.03);
+      --container:1200px;
+    }
+
+    /* Container */
+    .wrap{max-width:var(--container);margin:0 auto;padding:0 20px}
+
+    /* Header */
+    header{background:linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6));position:relative;z-index:30}
+    nav{height:72px;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:14px;color:var(--accent);font-weight:800;font-family:Montserrat, sans-serif}
+    .brand img{height:28px}
+    .nav-links{display:flex;gap:18px;align-items:center}
+    .nav-links a{color:#cfd7df;font-weight:500;font-size:14px}
+    .btn-wa{background:#16a34a;color:white;padding:10px 14px;border-radius:8px;font-weight:600}
+
+    /* Hero */
+    .hero{min-height:640px;display:flex;align-items:center;justify-content:center;padding:60px 0;position:relative;overflow:hidden}
+    .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,10,15,0.2), rgba(3,6,10,0.9));mix-blend-mode:multiply}
+    .hero-bg{position:absolute;inset:0;background-image:url('asset 20.webp');background-size:cover;background-position:center;filter:blur(0.6px) saturate(1.05);transform:scale(1.02)}
+    .hero-inner{position:relative;z-index:20;max-width:1100px;text-align:center}
+    .eyebrow{color:var(--accent);font-weight:700;font-size:20px;margin-bottom:10px}
+    h1{font-family:Montserrat, sans-serif;font-size:44px;color:#fff;line-height:1.02;margin-bottom:8px}
+    h1 strong{display:block;font-size:40px;color:#fff}
+    .lead{color:var(--muted);max-width:780px;margin:14px auto 24px;font-size:15px}
+    .hero-cta{display:flex;gap:12px;justify-content:center;margin-bottom:26px}
+    .cta-btn{padding:12px 20px;border-radius:8px;font-weight:700}
+    .cta-red{background:var(--accent);color:white}
+    .cta-green{background:var(--accent-2);color:white}
+
+    /* features boxes */
+    .features{display:flex;gap:14px;justify-content:center;margin-top:18px}
+    .feature{background:rgba(255,255,255,0.03);padding:18px;border-radius:8px;min-width:190px;border:1px solid rgba(255,255,255,0.03)}
+    .feature h4{font-size:14px;color:#fff;margin-bottom:6px}
+    .feature p{color:var(--muted);font-size:13px}
+
+    /* Section heading */
+    section{padding:64px 0}
+    .section-head{text-align:center;margin-bottom:36px}
+    .section-head h2{font-family:Montserrat;font-size:30px;color:#fff}
+    .section-head p{color:var(--muted);margin-top:8px}
+
+    /* Cards grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+    .card{background:var(--card);border-radius:10px;padding:16px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 8px 20px rgba(2,6,12,0.6)}
+    .thumb{height:110px;border-radius:8px;background:#0b1220;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .thumb img{max-width:100%;height:100%;object-fit:cover}
+    .card h3{font-size:18px;margin-bottom:6px;color:#fff}
+    .price{font-weight:800;color:var(--accent);font-size:20px}
+    .card .meta{color:var(--muted);font-size:13px;margin-bottom:10px}
+    .card .card-actions{display:flex;gap:10px}
+    .btn{padding:8px 12px;border-radius:8px;font-weight:700;background:transparent;border:1px solid rgba(255,255,255,0.06);color:#e6eef6}
+    .btn.green{background:var(--accent-2);border:0}
+
+    /* big callout */
+    .callout{background:linear-gradient(90deg, rgba(226,58,58,0.95), rgba(206,42,42,0.95));padding:28px;border-radius:10px;margin-top:28px;text-align:center}
+    .callout input{padding:12px 16px;border-radius:8px;border:0;margin-top:12px;width:40%;max-width:420px}
+
+    /* contact section */
+    .contact{background:linear-gradient(180deg,#050609, #0b0f13);padding:64px 0}
+    .contact-wrap{display:grid;grid-template-columns:1fr 360px;gap:28px}
+    .form-card{background:var(--panel);padding:22px;border-radius:10px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type=text],input[type=email],select,textarea{width:100%;padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;margin-bottom:12px}
+    .send{background:linear-gradient(90deg,var(--accent),#b32b2b);padding:12px;border-radius:8px;border:0;color:white;font-weight:700;width:100%}
+
+    /* contact side card */
+    .side-card{background:#0d1720;padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.03)}
+    .side-card h4{color:#fff;margin-bottom:8px}
+    .side-card p{color:var(--muted);margin-bottom:10px}
+
+    footer{padding:28px 0;background:#050506;margin-top:30px}
+    footer .fgrid{display:flex;justify-content:space-between;gap:20px}
+    footer p{color:var(--muted);font-size:14px}
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .contact-wrap{grid-template-columns:1fr 320px}
+    }
+    @media (max-width:720px){
+      .nav-links{display:none}
+      h1{font-size:30px}
+      .hero{min-height:560px;padding:36px 0}
+      .grid{grid-template-columns:1fr}
+      .contact-wrap{grid-template-columns:1fr}
+      .hero-inner{padding:0 12px}
+      .callout input{width:100%}
+      .thumb{height:96px}
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">
+          <img src="assets/asset 0.webp" alt="logo" style="height:34px;object-fit:contain;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.6)">
+          <span>PinVirtual</span>
+        </div>
+        <div class="nav-links">
+          <a href="#servicios">Servicios</a>
+          <a href="#precios">Precios</a>
+          <a href="#tutoriales">Tutoriales</a>
+          <a href="#contacto">Contacto</a>
+          <a class="btn-wa" href="#contacto">WhatsApp</a>
+        </div>
+      </nav>
+    </div>
+    <div class="hero">
+      <div class="asset 20.webp" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="eyebrow">Servicios de Streaming</div>
+        <h1>Premium al Mejor Precio<br><strong>Servicios de Streaming</strong></h1>
+        <p class="lead">Disfruta de cuentas Netflix, Disney+, Amazon Prime, Spotify Premium y más. Pantallas compartidas seguras con garantía total.</p>
+        <div class="hero-cta">
+          <a class="cta-btn cta-red" href="#servicios">Ver Servicios</a>
+          <a class="cta-btn cta-green" href="#contacto">Comprar por WhatsApp</a>
+        </div>
+
+        <div class="features">
+          <div class="feature"><h4>Garantía Total</h4><p>Soporte técnico 24/7 y reemplazo inmediato</p></div>
+          <div class="feature"><h4>Activación Inmediata</h4><p>Recibe tus datos en menos de 5 minutos</p></div>
+          <div class="feature"><h4>Mejores Precios</h4><p>Hasta 70% menos que el precio oficial</p></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="servicios" class="wrap">
+      <div class="section-head">
+        <h2>Nuestros <span style="color:var(--accent)">Servicios de Streaming</span></h2>
+        <p>Accede a las mejores plataformas con pantallas compartidas seguras, garantía total y precios hasta 70% más económicos.</p>
+      </div>
+
+      <div class="grid">
+        <!-- Card 1 -->
+        <article class="card">
+          <div class="thumb"><img src="assets/asset 1.webp" alt="Netflix"></div>
+          <h3>Netflix Premium</h3>
+          <div class="meta">Acceso completo a todo el catálogo de Netflix en 4K Ultra HD</div>
+          <div class="price">$8.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="thumb"><img src="assets/asset 4.webp" alt="Disney+"></div>
+          <h3>Disney+ Premium</h3>
+          <div class="meta">Todo el universo Disney, Marvel, Star Wars y National Geographic</div>
+          <div class="price">$6.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card">
+          <div class="thumb"><img src="assets/asset 5.webp" alt="Prime Video"></div>
+          <h3>Amazon Prime Video</h3>
+          <div class="meta">Series y películas exclusivas con envíos rápidos</div>
+          <div class="price">$7.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="card">
+          <div class="thumb"><img src="assets/asset 1.webp" alt="Spotify"></div>
+          <h3>Spotify Premium</h3>
+          <div class="meta">Música sin límites, sin anuncios y con calidad superior</div>
+          <div class="price">$4.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card">
+          <div class="thumb"><img src="assets/asset 11.webp" alt="Crunchyroll"></div>
+          <h3>Crunchyroll Premium</h3>
+          <div class="meta">El mejor anime y manga con subtítulos en español</div>
+          <div class="price">$5.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="card">
+          <div class="thumb"><img src="asset 12.png" alt="HBO Max"></div>
+          <h3>HBO Max</h3>
+          <div class="meta">Series premium, películas de estreno y contenido exclusivo</div>
+          <div class="price">$9.900 <span style="font-weight:400;color:var(--muted);font-size:13px">/mes</span></div>
+          <div class="card-actions" style="margin-top:12px">
+            <button class="btn">Más Información</button>
+            <button class="btn green">Comprar</button>
+          </div>
+        </article>
+
+      </div>
+
+      <div class="callout" style="margin-top:40px">
+        <h3 style="color:white;font-family:Montserrat;font-size:20px">¿No encuentras lo que buscas?</h3>
+        <p style="color:#fff;opacity:0.95;margin-top:8px">Contáctanos por WhatsApp y te ayudamos a encontrar el servicio perfecto para ti</p>
+        <input type="text" placeholder="Escribe lo que buscas...">
+      </div>
+
+    </section>
+
+    <!-- Contact -->
+    <section id="contacto" class="contact">
+      <div class="wrap">
+        <div style="text-align:center;margin-bottom:26px"><h2 style="font-family:Montserrat;color:white">Contáctanos para Más Información</h2>
+        <p style="color:var(--muted);margin-top:8px">¿Tienes dudas sobre nuestros servicios? Completa el formulario y te responderemos en menos de 2 horas.</p></div>
+
+        <div class="contact-wrap">
+          <div class="form-card">
+            <label>Nombre Completo *</label>
+            <input type="text" placeholder="Tu nombre completo">
+            <label>Correo Electrónico *</label>
+            <input type="email" placeholder="tucorreo@mail.com">
+            <label>Teléfono / WhatsApp</label>
+            <input type="text" placeholder="+57 300 123 4567">
+            <label>Servicio de Interés</label>
+            <select><option>Selecciona un servicio</option><option>Netflix Premium</option><option>Disney+ Premium</option><option>Otro</option></select>
+            <label>Mensaje</label>
+            <textarea rows="5" placeholder="Cuéntanos qué necesitas o si tienes alguna pregunta específica"></textarea>
+            <button class="send">Enviar Mensaje</button>
+          </div>
+
+          <aside class="side-card">
+            <h4>Otras Formas de Contacto</h4>
+            <p><strong>WhatsApp</strong><br>Respuesta inmediata: +57 300 123 4567</p>
+            <p><strong>Email</strong><br>info@pinvirtual.com.co</p>
+            <p><strong>Horario de Atención</strong><br>Lunes a Domingo 8:00 AM - 10:00 PM</p>
+
+            <div style="background:#b92f2f;color:white;padding:12px;border-radius:8px;margin-top:14px;text-align:center">¿Necesitas Ayuda Inmediata?<br><button style="margin-top:10px;padding:8px 10px;border-radius:8px;border:0;background:white;color:#b92f2f;font-weight:700">Hablar con Asistente</button></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="fgrid">
+        <div>
+          <h3 style="color:var(--accent);font-family:Montserrat">PinVirtual</h3>
+          <p style="max-width:540px">Tu tienda digital de confianza para servicios de streaming premium. Ofrecemos cuentas Netflix, Disney+, Amazon Prime, Spotify y más, con garantía y soporte técnico especializado.</p>
+        </div>
+        <div style="text-align:right">
+          <p><strong>Nuestros Servicios</strong></p>
+          <p style="color:var(--muted)">Cuentas Netflix • Cuentas Disney+ • Cuentas Amazon • Cuentas Spotify • Pantallas compartidas</p>
+        </div>
+      </div>
+      <div style="margin-top:18px;color:var(--muted);font-size:13px">© 2025 PinVirtual. Todos los derechos reservados.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',function(e){
+        const target=document.querySelector(this.getAttribute('href'));
+        if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth',block:'start'})}
+      })
+    })
+
+    // Simple form handler (demo)
+    document.querySelector('.send').addEventListener('click',function(){
+      alert('Mensaje enviado. Nos pondremos en contacto contigo pronto.');
+    })
+  </script>
+</body>
+</html>
